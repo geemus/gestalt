@@ -33,12 +33,12 @@ The duration on the outermost call is the total for all nested calls, and the du
 
 You can also get a summary after the fact:
 
-Gestalt.profile do
+  Gestalt.profile do
 
-  slow = Slow.new
-  slow.method
+    slow = Slow.new
+    slow.method
 
-end
+  end
 
 This will give you oßutput in the following format:
 
