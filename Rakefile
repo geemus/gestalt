@@ -5,11 +5,12 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "gestalt"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Simple Ruby profiling}
+    gem.description = %Q{Simple Ruby profiling}
     gem.email = "wbeary@engineyard.com"
     gem.homepage = "http://github.com/geemus/gestalt"
     gem.authors = ["geemus (Wesley Beary)"]
+    gem.add_dependency "formatador", ">= 0.0.12"
     gem.add_development_dependency "shindo", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end

@@ -1,17 +1,74 @@
 = gestalt
 
-Description goes here.
+Simple Ruby profiling
 
-== Note on Patches/Pull Requests
- 
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+== Getting started
+
+Profiling with gestalt is easy to get started with and understand.
+Say for instance that you have this class:
+
+  class Slow
+
+    def method
+      3.times { sleep(0.1) }
+      'slow'
+    end
+
+  end
+
+You have a feeling that it could do better with single, so check to see what happens when you call it:
+
+  Gestalt.trace do
+
+    slow = Slow.new
+    slow.method
+
+  end
+
+This will give you output in the following format:
+  duration method file
+    duration method file
+
+The duration on the outermost call is the total for all nested calls, and the duration of the indented lines show how long the individual parts took.
+
+You can also get a summary after the fact:
+
+Gestalt.profile do
+
+  slow = Slow.new
+  slow.method
+
+end
+
+This will give you oßutput in the following format:
+
+  +---+--------+----------+
+  | # | action | duration |
+  +---+--------+----------+
+
+The # column indicates how many times each occurredßß, action is the thing that occurred and duration is the total time taken for all occurrences.
 
 == Copyright
 
-Copyright (c) 2010 geemus (Wesley Beary). See LICENSE for details.
+(The MIT License)
+
+Copyright (c) 2010 {geemus (Wesley Beary)}[http://github.com/geemus]
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
