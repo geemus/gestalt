@@ -40,13 +40,13 @@ You can also get a summary after the fact:
 
   end
 
-This will give you oßutput in the following format:
+This will give you output in the following format:
 
   +---+--------+----------+
   | # | action | duration |
   +---+--------+----------+
 
-The # column indicates how many times each occurredßß, action is the thing that occurred and duration is the total time taken for all occurrences.
+The # column indicates how many times each occurred, action is the thing that occurred and duration is the total time taken for all occurrences.
 
 == Copyright
 
