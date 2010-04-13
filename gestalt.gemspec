@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{gestalt}
-  s.version = "0.0.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["geemus (Wesley Beary)"]
-  s.date = %q{2010-04-11}
+  s.date = %q{2010-04-12}
   s.description = %q{Simple Ruby profiling}
   s.email = %q{wbeary@engineyard.com}
   s.extra_rdoc_files = [
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "gestalt.gemspec",
     "lib/gestalt.rb",
     "lib/gestalt/call.rb",
     "tests/gestalt_tests.rb",
