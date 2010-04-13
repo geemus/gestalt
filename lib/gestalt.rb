@@ -42,12 +42,6 @@ class Gestalt
   end
 
   def run(&block)
-    start
-    yield
-    stop
-  end
-
-  def start
     Kernel.set_trace_func(
       lambda do |event, file, line, id, binding, classname|
         case event
@@ -55,8 +49,7 @@ class Gestalt
           # p "call #{classname}##{id}"
           call = Gestalt::Call.new(
             :action     => "#{classname}##{id}",
-            :location   => "#{File.expand_path(file)}:#{line}",
-            :started_at => Time.now.to_f
+            :location   => "#{File.expand_path(file)}:#{line}"
           )
           unless @stack.empty?
             @stack.last.children.push(call)
@@ -66,7 +59,7 @@ class Gestalt
           # p "return #{classname}##{id}"
           unless @stack.empty? # we get one of these when we set the trace_func
             call = @stack.pop
-            call.finished_at = Time.now.to_f
+            call.finish
             if @stack.empty?
               @calls << call
             end
@@ -74,10 +67,18 @@ class Gestalt
         end
       end
     )
-  end
-
-  def stop
+    yield
     Kernel.set_trace_func(nil)
+    @stack.pop # pop Kernel#set_trace_func(nil)
+    unless @stack.empty?
+      @stack.last.children.pop # pop Kernel#set_trace_func(nil)
+    end
+    while call = @stack.pop # leftovers, not sure why...
+      call.finish
+      if @stack.empty?
+        @calls << call
+      end
+    end
   end
 
   def self.profile(&block)
