@@ -49,7 +49,7 @@ class Gestalt
           # p "call #{classname}##{id}"
           call = Gestalt::Call.new(
             :action     => "#{classname}##{id}",
-            :location   => "#{File.expand_path(file)}:#{line}"
+            :location   => "#{file}:#{line}"
           )
           unless @stack.empty?
             @stack.last.children.push(call)
