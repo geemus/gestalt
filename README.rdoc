@@ -26,10 +26,15 @@ You have a feeling that it could do better with single, so check to see what hap
   end
 
 This will give you output in the following format:
-  duration method file
-    duration method file
+  times duration method file
+    times duration method file
 
-The duration on the outermost call is the total for all nested calls, and the duration of the indented lines show how long the individual parts took.
+Times is how many times the thing was called just then,
+duration is how long it took on average for those calls,
+method tells you what was called
+and file tells you where it was called from.
+
+Indents means nesting, durations for outer calls include inner calls and the times for inner calls happened for each of the outer calls.
 
 You can also get a summary after the fact:
 

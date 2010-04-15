@@ -15,7 +15,15 @@ class Gestalt
 
   def display_calls
     Formatador.display_line
+    condensed = []
     for call in @calls
+      if condensed.last && condensed.last == call
+        condensed.last.durations.concat(call.durations)
+      else
+        condensed << call
+      end
+    end
+    for call in condensed
       call.display
     end
     Formatador.display_line
@@ -109,13 +117,18 @@ if __FILE__ == $0
 
   class Slow
 
-    def single
-      'slow' << 'er'
+    def slow(est = false)
+      unless est
+        'slow' << 'e' << 'r'
+      else
+        'slow' << 'e' << 's' << 't'
+      end
     end
 
-    def double
-      single
-      single
+    def slowing
+      slow
+      slow
+      slow(true)
     end
 
   end
@@ -123,14 +136,14 @@ if __FILE__ == $0
   Gestalt.trace do
 
     slow = Slow.new
-    slow.single
+    slow.slowing
 
   end
 
   Gestalt.profile do
 
     slow = Slow.new
-    slow.double
+    slow.slowing
 
   end
 
