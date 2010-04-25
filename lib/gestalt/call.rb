@@ -18,31 +18,34 @@ class Gestalt
       action == other.action && location == other.location && children == other.children
     end
 
-    def display(formatador = Formatador.new)
+    def display(total, formatador = Formatador.new)
       data = []
-      data << format("[light_black]x%0.4d[/]", durations.length)
-      data << format("%.6f", duration)
+      data << format("[bold]%.1f%%[/]", (duration / total) * 100.0)
+      if durations.length > 1
+        data << "[light_black]#{durations.length}x[/]"
+      end
       data << "[bold]#{action}[/]"
       data << "[light_black]#{location}[/]"
       condensed = []
-      for child in children
-        if condensed.last && condensed.last == child
-          condensed.last.durations.concat(child.durations)
+      total = 0.0
+      for call in children
+        if condensed.last && condensed.last == call
+          condensed.last.durations.concat(call.durations)
         else
-          condensed << child
+          condensed << call
         end
+        total += call.duration
       end
       formatador.display_line(data.join('  '))
       formatador.indent do
         for child in condensed
-          child.display(formatador)
+          child.display(total, formatador)
         end
       end
     end
 
     def duration
-      sum = durations.inject(0) {|memo, duration| duration + memo}
-      sum / durations.length
+      durations.inject(0.0) {|memo, duration| duration + memo}
     end
 
     def durations

@@ -26,13 +26,13 @@ You have a feeling that it could do better with single, so check to see what hap
   end
 
 This will give you output in the following format:
-  times duration method file
-    times duration method file
+  percentage times method file
+    percentage times method file
 
-Times is how many times the thing was called just then,
-duration is how long it took on average for those calls,
+percentage is the percent of the parent that these calls account for
+times is how many times the thing was called
 method tells you what was called
-and file tells you where it was called from.
+and file tells you where it was called from
 
 Indents means nesting, durations for outer calls include inner calls and the times for inner calls happened for each of the outer calls.
 

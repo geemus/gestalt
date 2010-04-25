@@ -16,15 +16,17 @@ class Gestalt
   def display_calls
     Formatador.display_line
     condensed = []
+    total = 0.0
     for call in @calls
       if condensed.last && condensed.last == call
         condensed.last.durations.concat(call.durations)
       else
         condensed << call
       end
+      total += call.duration
     end
     for call in condensed
-      call.display
+      call.display(total)
     end
     Formatador.display_line
   end
@@ -37,8 +39,7 @@ class Gestalt
     table = []
     for key, value in @totals
       table << {
-        '#' => value[:occurances],
-        :action => key,
+        :action => "#{value[:occurances]}x #{key}",
         :duration => format("%.6f", value[:duration])
       }
     end
