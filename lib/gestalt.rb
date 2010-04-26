@@ -81,6 +81,7 @@ class Gestalt
       end
     )
     yield
+    rescue StandardError, Interrupt
     Kernel.set_trace_func(nil)
     @stack.pop # pop Kernel#set_trace_func(nil)
     unless @stack.empty?
@@ -119,6 +120,12 @@ class Gestalt
 end
 
 if __FILE__ == $0
+
+  Gestalt.trace do
+    raise StandardError.new('exception')
+    slow = Slow.new
+    slow.slowing
+  end
 
   class Slow
 
