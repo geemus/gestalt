@@ -5,7 +5,7 @@ require 'formatador'
 
 class Gestalt
 
-  attr_accessor :calls
+  attr_accessor :calls, :formatador
 
   def initialize
     @calls = []
@@ -14,7 +14,7 @@ class Gestalt
   end
 
   def display_calls
-    Formatador.display_line
+    formatador.display_line
     condensed = []
     total = 0.0
     for call in @calls
@@ -26,9 +26,9 @@ class Gestalt
       total += call.duration
     end
     for call in condensed
-      call.display(total)
+      call.display(total, formatador)
     end
-    Formatador.display_line
+    formatador.display_line
   end
 
   def display_profile
@@ -45,9 +45,13 @@ class Gestalt
     end
     table = table.sort {|x,y| y[:duration] <=> x[:duration]}
 
-    Formatador.display_line
-    Formatador.display_table(table)
-    Formatador.display_line
+    formatador.display_line
+    formatador.display_table(table)
+    formatador.display_line
+  end
+
+  def formatador
+    @formatador ||= Formatador.new
   end
 
   def run(&block)
