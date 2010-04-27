@@ -5,6 +5,8 @@ require 'formatador'
 
 class Gestalt
 
+  VERSION = '0.0.2'
+
   attr_accessor :calls, :formatador
 
   def initialize
