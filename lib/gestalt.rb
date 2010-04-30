@@ -7,16 +7,17 @@ class Gestalt
 
   VERSION = '0.0.2'
 
-  attr_accessor :calls, :formatador
+  attr_accessor :calls
 
-  def initialize
+  def initialize(formatador = Formatador.new)
     @calls = []
+    @formatador = Formatador.new
     @stack = []
     @totals = {}
   end
 
   def display_calls
-    formatador.display_line
+    @formatador.display_line
     condensed = []
     total = 0.0
     for call in @calls
@@ -28,9 +29,9 @@ class Gestalt
       total += call.duration
     end
     for call in condensed
-      call.display(total, formatador)
+      call.display(total, @formatador)
     end
-    formatador.display_line
+    @formatador.display_line
   end
 
   def display_profile
@@ -47,13 +48,9 @@ class Gestalt
     end
     table = table.sort {|x,y| y[:duration] <=> x[:duration]}
 
-    formatador.display_line
-    formatador.display_table(table)
-    formatador.display_line
-  end
-
-  def formatador
-    @formatador ||= Formatador.new
+    @formatador.display_line
+    @formatador.display_table(table)
+    @formatador.display_line
   end
 
   def run(&block)
@@ -97,14 +94,14 @@ class Gestalt
     end
   end
 
-  def self.profile(&block)
-    gestalt = new
+  def self.profile(formatador = Formatador.new, &block)
+    gestalt = new(formatador)
     gestalt.run(&block)
     gestalt.display_profile
   end
 
-  def self.trace(&block)
-    gestalt = new
+  def self.trace(formatador = Formatador.new, &block)
+    gestalt = new(formatador)
     gestalt.run(&block)
     gestalt.display_calls
   end
