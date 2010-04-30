@@ -11,7 +11,7 @@ class Gestalt
 
   def initialize(formatador = Formatador.new)
     @calls = []
-    @formatador = Formatador.new
+    @formatador = formatador
     @stack = []
     @totals = {}
   end
