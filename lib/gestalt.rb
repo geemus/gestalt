@@ -13,7 +13,7 @@ class Gestalt
     options = {
       'call'      => true,
       'c-call'    => false,
-      :formatador => Formatador.new
+      'formatador' => Formatador.new
     }.merge!(options)
 
     @traceable_calls = []
