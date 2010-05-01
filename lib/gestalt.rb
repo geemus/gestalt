@@ -9,9 +9,26 @@ class Gestalt
 
   attr_accessor :calls
 
-  def initialize(formatador = Formatador.new)
+  def initialize(options = {})
+    options = {
+      'call'      => true,
+      'c-call'    => false,
+      :formatador => Formatador.new
+    }.merge!(options)
+
+    @traceable_calls = []
+    @traceable_returns = []
+    if options['call']
+      @traceable_calls << 'call'
+      @traceable_returns << 'return'
+    end
+    if options ['c-call']
+      @traceable_calls << 'c-call'
+      @traceable_returns << 'c-return'
+    end
+
     @calls = []
-    @formatador = formatador
+    @formatador = options[:formatador]
     @stack = []
     @totals = {}
   end
@@ -57,8 +74,7 @@ class Gestalt
     Kernel.set_trace_func(
       lambda do |event, file, line, id, binding, classname|
         case event
-        when 'call', 'c-call'
-          # p "call #{classname}##{id}"
+        when *@traceable_calls
           call = Gestalt::Call.new(
             :action     => "#{classname}##{id}",
             :location   => "#{file}:#{line}"
@@ -67,8 +83,7 @@ class Gestalt
             @stack.last.children.push(call)
           end
           @stack.push(call)
-        when 'return', 'c-return'
-          # p "return #{classname}##{id}"
+        when *@traceable_returns
           unless @stack.empty? # we get one of these when we set the trace_func
             call = @stack.pop
             call.finish
@@ -94,14 +109,14 @@ class Gestalt
     end
   end
 
-  def self.profile(formatador = Formatador.new, &block)
-    gestalt = new(formatador)
+  def self.profile(options = {}, &block)
+    gestalt = new(options)
     gestalt.run(&block)
     gestalt.display_profile
   end
 
-  def self.trace(formatador = Formatador.new, &block)
-    gestalt = new(formatador)
+  def self.trace(options = {}, &block)
+    gestalt = new(options)
     gestalt.run(&block)
     gestalt.display_calls
   end
@@ -145,6 +160,13 @@ if __FILE__ == $0
   end
 
   Gestalt.trace do
+
+    slow = Slow.new
+    slow.slowing
+
+  end
+
+  Gestalt.trace('c-call' => true) do
 
     slow = Slow.new
     slow.slowing
