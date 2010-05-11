@@ -28,7 +28,7 @@ class Gestalt
     end
 
     @calls = []
-    @formatador = options[:formatador]
+    @formatador = options['formatador']
     @stack = []
     @totals = {}
   end
