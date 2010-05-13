@@ -3,7 +3,7 @@ class Gestalt
   class Call
 
     attr_accessor :children, :durations
-    attr_accessor :action, :finished_at, :location, :started_at
+    attr_accessor :action, :binding, :finished_at, :location, :started_at
 
     def initialize(attributes = {})
       @started_at = Time.now.to_f

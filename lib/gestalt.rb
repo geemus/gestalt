@@ -77,6 +77,7 @@ class Gestalt
         when *@traceable_calls
           call = Gestalt::Call.new(
             :action     => "#{classname}##{id}",
+            :binding    => binding,
             :location   => "#{file}:#{line}"
           )
           unless @stack.empty?
