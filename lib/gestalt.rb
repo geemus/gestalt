@@ -95,8 +95,11 @@ class Gestalt
         end
       end
     )
-    yield
+    begin
+      value = yield
     rescue StandardError, Interrupt
+      # noop
+    end
     Kernel.set_trace_func(nil)
     @stack.pop # pop Kernel#set_trace_func(nil)
     unless @stack.empty?
@@ -108,6 +111,7 @@ class Gestalt
         @calls << call
       end
     end
+    value
   end
 
   def self.profile(options = {}, &block)
