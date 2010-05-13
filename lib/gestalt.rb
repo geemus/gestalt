@@ -5,7 +5,7 @@ require 'formatador'
 
 class Gestalt
 
-  VERSION = '0.0.7'
+  VERSION = '0.0.8'
 
   attr_accessor :calls
 
