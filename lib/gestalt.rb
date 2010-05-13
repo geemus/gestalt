@@ -98,7 +98,7 @@ class Gestalt
     )
     begin
       value = yield
-    rescue StandardError, Interrupt
+    rescue StandardError, Interrupt => value
       # noop
     end
     Kernel.set_trace_func(nil)
