@@ -7,7 +7,7 @@ class Gestalt
 
   VERSION = '0.0.9'
 
-  attr_accessor :calls
+  attr_accessor :bindings, :calls
 
   def initialize(options = {})
     options = {
@@ -27,6 +27,7 @@ class Gestalt
       @traceable_returns << 'c-return'
     end
 
+    @bindings = []
     @calls = []
     @formatador = options['formatador']
     @stack = []
@@ -73,11 +74,11 @@ class Gestalt
   def run(&block)
     Kernel.set_trace_func(
       lambda do |event, file, line, id, binding, classname|
+        @bindings << binding
         case event
         when *@traceable_calls
           call = Gestalt::Call.new(
             :action     => "#{classname}##{id}",
-            :binding    => binding,
             :location   => "#{file}:#{line}"
           )
           unless @stack.empty?
@@ -101,6 +102,8 @@ class Gestalt
       # noop
     end
     Kernel.set_trace_func(nil)
+    @bindings.pop # pop Kernel#set_trace_func(nil)
+    @bindings.pop # pop Gestalt.run
     @stack.pop # pop Kernel#set_trace_func(nil)
     unless @stack.empty?
       @stack.last.children.pop # pop Kernel#set_trace_func(nil)
