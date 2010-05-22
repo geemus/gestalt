@@ -7,7 +7,7 @@ class Gestalt
 
   VERSION = '0.0.11'
 
-  attr_accessor :bindings, :calls
+  attr_accessor :bindings, :calls, :duration
 
   def initialize(options = {})
     options = {
@@ -72,6 +72,7 @@ class Gestalt
   end
 
   def run(&block)
+    started_at = Time.now
     Kernel.set_trace_func(
       lambda do |event, file, line, id, binding, classname|
         @bindings << binding
@@ -102,6 +103,7 @@ class Gestalt
       # noop
     end
     Kernel.set_trace_func(nil)
+    @duration = Time.now.to_f - started_at.to_f
     @bindings.pop # pop Kernel#set_trace_func(nil)
     @bindings.pop # pop Gestalt.run
     @stack.pop # pop Kernel#set_trace_func(nil)
